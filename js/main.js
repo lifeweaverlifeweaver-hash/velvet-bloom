@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-info">
                         <h3>${product["product-title"]}</h3>
                         <p class="category">${product["chip"] || ''}</p>
-                        <p class="price">${product["product-meta (2)"]}</p>
+                        <p class="price">${product["product-meta  (2)"]}</p>
                         <button class="buy-btn">КУПИ СЕГА</button>
                     </div>
                 `;
