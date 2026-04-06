@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const productContainer = document.getElementById('product-grid');
 
     fetch('products.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Файлът не е намерен');
+            return response.json();
+        })
         .then(products => {
             productContainer.innerHTML = ''; 
 
@@ -24,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 productContainer.appendChild(productCard);
             });
         })
-        .catch(err => console.error("Грешка:", err));
+        .catch(err => {
+            console.error("Грешка:", err);
+            productContainer.innerHTML = "<p>Грешка при зареждане на продуктите.</p>";
+        });
 });
 
