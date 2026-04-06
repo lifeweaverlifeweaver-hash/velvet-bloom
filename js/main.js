@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const productContainer = document.getElementById('product-grid');
 
-    fetch('products.json')
+    fetch('./products.json')
         .then(response => {
             if (!response.ok) throw new Error('File not found');
             return response.json();
