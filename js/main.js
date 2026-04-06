@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetch('products.json')
         .then(response => {
-            if (!response.ok) throw new Error('Файлът не е намерен');
+            if (!response.ok) throw new Error('File not found');
             return response.json();
         })
         .then(products => {
@@ -28,8 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         })
         .catch(err => {
-            console.error("Грешка:", err);
+            console.error("Error:", err);
             productContainer.innerHTML = "<p>Грешка при зареждане на продуктите.</p>";
         });
 });
-
