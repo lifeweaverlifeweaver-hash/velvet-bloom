@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Bloom | Jewelry & Accessories</title>
+    <meta name="description" content="Velvet Bloom - Ръчно изработени луксозни бижута в България. Златни обеци Moonlight и Кристални комплекти. Бърза доставка.">
+    <link rel="icon" type="image/png" href="images/velvet-favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-wine: #300522; /* Твоят луксозен цвят от снимките */
+            --white: #ffffff;
+            --cream: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-wine);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; /* Място за Viber бутона */
+        }
+
+        /* Златният Хедър от снимките */
+        .promo-banner {
+            background-color: var(--gold);
+            color: var(--white);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Заглавието Velvet Bloom */
+        header {
+            text-align: center;
+            padding: 50px 20px 20px 20px;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin: 0;
+            letter-spacing: 3px;
+        }
+
+        header h2 {
+            font-size: 0.8rem;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Динамичната мрежа за продукти */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.03); /* Леко прозрачен */
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: 300px;
+            object-fit: contain; /* Запазва снимката без изрязване */
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .product-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--white);
+            margin: 10px 0;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 700;
+            display: block;
+            margin: 15px 0;
+        }
+
+        /* Бутоните КУПИ СЕГА */
+        .buy-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: var(--gold);
+            color: var(--dark-wine);
+        }
+
+        /* Твоят Лилав Viber Бутон от снимките */
+        .viber-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #7360F2; /* Viber цвят */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .viber-btn:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+    </style>
+    <link rel="stylesheet"href="style.css">
+</head>
+<body>
+
+    <div class="promo-banner">
+        ✨ Безплатна доставка за поръчки над 150€ ✨
+    </div>
+
+    <header>
+        <h1>Velvet Bloom</h1>
+        <h2>Jewelry & Accessories</h2>
+    </header>
+
+    <div class="container">
+        <div class="product-grid" id="product-container">
+            </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Velvet Bloom Jewelry | By Tsvetelina
+    </footer>
+
+    <a href="viber://chat?number=%2B359888888888" class="viber-btn">
+        💜 ПОРЪЧАЙ ПО VIBER
+    </a>
+
+    <script>
+        async function loadProducts() {
+            try {
+                const response = await fetch('products.json');
+                const products = await response.json();
+                const container = document.getElementById('product-container');
+
+                products.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${p.Image_URL}" alt="${p.Name}">
+                        <h3>${p.Name}</h3>
+                        <span class="price">${p.Price} €</span>
+                        <a href="#" class="buy-btn">КУПИ СЕГА</a>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Грешка при зареждането:", error);
+            }
+        }
+
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>
