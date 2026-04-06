@@ -1,48 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
     const productContainer = document.getElementById('product-grid');
 
-    const renderProducts = (products) => {
-        productContainer.innerHTML = ''; 
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-
-            // УНИВЕРСАЛНО ТЪРСЕНЕ: Проверяваме всички варианти, които видях на снимките
-            const title = product["product-title"] || product["title"] || "Бижу";
-            const image = product["product-image src"] || product["image"] || "";
-            
-            // Търсим цената в "meta (2)", "meta", или "meta (4)"
-            const price = product["product-meta (2)"] || 
-                          product["product-meta  (2)"] || 
-                          product["product-meta"] || 
-                          "19.99 €";
-
-            const category = product["chip"] || "";
-
-            productCard.innerHTML = `
-                <div class="product-image">
-                    <img src="${image}" alt="${title}">
-                </div>
-                <div class="product-info">
-                    <h3>${title}</h3>
-                    <p class="category">${category}</p>
-                    <p class="price">${price}</p>
-                    <button class="buy-btn">КУПИ СЕГА</button>
-                </div>
-            `;
-            productContainer.appendChild(productCard);
-        });
-    };
-
-    // Пробваме да заредим файла
+    // Използваме директен път, тъй като products.json е в същата папка като index.html
     fetch('./products.json')
-        .then(res => res.json())
-        .then(data => renderProducts(data))
+        .then(response => {
+            if (!response.ok) throw new Error('Липсва products.json');
+            return response.json();
+        })
+        .then(products => {
+            productContainer.innerHTML = ''; 
+
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+
+                // Директно взимане на данните по твоите ключове
+                const title = product["product-title"] || "Бижу";
+                const image = product["product-image src"] || "";
+                const price = product["product-meta (2)"] || "По запитване";
+
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${image}" alt="${title}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${title}</h3>
+                        <p class="price">${price}</p>
+                        <button class="buy-btn">КУПИ СЕГА</button>
+                    </div>
+                `;
+                productContainer.appendChild(productCard);
+            });
+        })
         .catch(err => {
-            // Ако не стане от корена, пробваме от папката js
-            fetch('products.json')
-                .then(res => res.json())
-                .then(data => renderProducts(data))
-                .catch(e => console.log("Грешка при зареждане"));
+            console.error(err);
+            productContainer.innerHTML = `<p style="color:red">Грешка при зареждане: ${err.message}</p>`;
         });
 });
