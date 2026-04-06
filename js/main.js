@@ -1,48 +1,34 @@
-// Константа за контейнера, където ще се показват бижутата
-const productContainer = document.getElementById('product-grid');
+document.addEventListener('DOMContentLoaded', () => {
+    const productContainer = document.getElementById('product-grid');
 
-// Основна функция за зареждане на продуктите
-async function fetchProducts() {
-    try {
-        // Зареждаме вече готовия products.json
-        const response = await fetch('products.json');
-        const products = await response.json();
+    // Зареждаме продуктите от файла products.json
+    fetch('products.json')
+        .then(response => response.json())
+        .then(products => {
+            productContainer.innerHTML = ''; // Изчистваме съобщението за зареждане
 
-        // Изчистваме контейнера, ако има тестови данни
-        productContainer.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
 
-        products.forEach(product => {
-            // Създаваме карта за всеки продукт
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
+                // Използваме точните имена от твоя файл: "product-image src", "product-title", "product-meta (2)"
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product["product-image src"]}" alt="${product["product-title"]}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product["product-title"]}</h3>
+                        <p class="category">${product["chip"] || 'Бижу'}</p>
+                        <p class="price">${product["product-meta (2)"]}</p>
+                        <button class="buy-btn">КУПИ СЕГА</button>
+                    </div>
+                `;
 
-            productCard.innerHTML = `
-                <div class="product-image">
-                    <img src="${product.image}" alt="${product.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=Velvet+Bloom'">
-                </div>
-                <div class="product-info">
-                    <h3>${product.title}</h3>
-                    <p class="price">${product.price} €</p>
-                    <button class="add-to-cart-btn" onclick="addToCart('${product.title}')">
-                        КУПИ СЕГА
-                    </button>
-                </div>
-            `;
-
-            productContainer.appendChild(productCard);
+                productContainer.appendChild(productCard);
+            });
+        })
+        .catch(error => {
+            console.error('Грешка при зареждане:', error);
+            productContainer.innerHTML = '<p>Проблем при зареждането на продуктите. Моля, опитайте по-късно.</p>';
         });
-
-        console.log(`Успешно заредени ${products.length} артикула.`);
-    } catch (error) {
-        console.error("Грешка при зареждане на продуктите:", error);
-        productContainer.innerHTML = '<p>В момента обновяваме каталога, моля опитайте пак след малко.</p>';
-    }
-}
-
-// Проста функция за количка (можеш да я разшириш по-късно)
-function addToCart(productName) {
-    alert(`Добавихте "${productName}" в количката си!`);
-}
-
-// Стартираме всичко при зареждане на страницата
-document.addEventListener('DOMContentLoaded', fetchProducts);
+});
